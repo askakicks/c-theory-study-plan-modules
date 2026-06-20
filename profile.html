@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Student Profile</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+min-height:100vh;
+padding:20px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+}
+
+.card{
+background:#1e293b;
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+.profile-header{
+text-align:center;
+margin-bottom:25px;
+}
+
+.avatar{
+width:120px;
+height:120px;
+border-radius:50%;
+background:#3b82f6;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:45px;
+font-weight:bold;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+color:#60a5fa;
+}
+
+.info{
+margin-top:20px;
+}
+
+.info p{
+margin:12px 0;
+font-size:18px;
+}
+
+.progress-wrap{
+background:#334155;
+height:25px;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.progress{
+height:100%;
+width:0%;
+background:#3b82f6;
+}
+
+.buttons{
+margin-top:25px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.btn{
+flex:1;
+padding:14px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+font-size:16px;
+}
+
+.study-btn{
+background:#10b981;
+color:white;
+}
+
+.logout-btn{
+background:#ef4444;
+color:white;
+}
+
+.stats{
+margin-top:20px;
+padding:20px;
+background:#0f172a;
+border-radius:15px;
+}
+
+.stats h3{
+color:#60a5fa;
+margin-bottom:15px;
+}
+
+@media(max-width:600px){
+
+.buttons{
+flex-direction:column;
+}
+
+.avatar{
+width:100px;
+height:100px;
+font-size:35px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<div class="profile-header">
+
+<div class="avatar" id="avatar">
+A
+</div>
+
+<h1>Student Profile</h1>
+
+</div>
+
+<div class="info">
+
+<p>
+<strong>Email:</strong>
+<span id="email">
+Loading...
+</span>
+</p>
+
+<p>
+<strong>Course:</strong>
+C Programming Mastery
+</p>
+
+<p>
+<strong>Status:</strong>
+<span id="status">
+Loading...
+</span>
+</p>
+
+</div>
+
+<div class="stats">
+
+<h3>Course Progress</h3>
+
+<div class="progress-wrap">
+<div class="progress" id="bar"></div>
+</div>
+
+<p id="percent">
+0% Complete
+</p>
+
+</div>
+
+<div class="buttons">
+
+<button
+class="btn study-btn"
+onclick="location.href='study.html'">
+Continue Learning
+</button>
+
+<button
+class="btn logout-btn"
+onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyC9C80mR-QVH66jeu3klwtXfPA8laB0iD4",
+
+authDomain:
+"c-programming-mastery.firebaseapp.com",
+
+projectId:
+"c-programming-mastery",
+
+storageBucket:
+"c-programming-mastery.firebasestorage.app",
+
+messagingSenderId:
+"994282427327",
+
+appId:
+"1:994282427327:web:397931765828898ee2470a"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+const db =
+getFirestore(app);
+
+window.logout =
+async ()=>{
+
+await signOut(auth);
+
+window.location.href =
+"index.html";
+
+};
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+if(!user){
+
+window.location.href =
+"index.html";
+
+return;
+
+}
+
+email.innerText =
+user.email;
+
+avatar.innerText =
+user.email[0]
+.toUpperCase();
+
+const snap =
+await getDoc(
+doc(db,"students",user.uid)
+);
+
+if(snap.exists()){
+
+const progress =
+snap.data().progress || [];
+
+const completed =
+progress.filter(x=>x)
+.length;
+
+const percentage =
+Math.round(
+(completed /
+(progress.length || 1))
+*100
+);
+
+bar.style.width =
+percentage + "%";
+
+percent.innerText =
+percentage +
+"% Complete";
+
+status.innerText =
+percentage === 100
+? "Course Completed 🎉"
+: "Learning In Progress";
+
+}
+else{
+
+status.innerText =
+"Not Started";
+
+}
+
+}
+);
+
+</script>
+
+</body>
+</html>
