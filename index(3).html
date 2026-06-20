@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><body>
+<h2>Login / Signup</h2>
+<input id="email"><input id="password" type="password">
+<button onclick="login()">Login</button><button onclick="signup()">Sign Up</button><p id="msg"></p>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC9C80mR-QVH66jeu3klwtXfPA8laB0iD4",
+  authDomain: "c-programming-mastery.firebaseapp.com",
+  projectId: "c-programming-mastery",
+  storageBucket: "c-programming-mastery.firebasestorage.app",
+  messagingSenderId: "994282427327",
+  appId: "1:994282427327:web:397931765828898ee2470a"
+};
+
+const app=initializeApp(firebaseConfig); const auth=getAuth(app);
+window.login=async()=>{try{await signInWithEmailAndPassword(auth,email.value,password.value);location='study.html';}catch(e){msg.innerText=e.message;}};
+window.signup=async()=>{try{await createUserWithEmailAndPassword(auth,email.value,password.value);location='study.html';}catch(e){msg.innerText=e.message;}};
+</script></body></html>
