@@ -1,21 +1,253 @@
-<!DOCTYPE html><html><body>
-<h2>Login / Signup</h2>
-<input id="email"><input id="password" type="password">
-<button onclick="login()">Login</button><button onclick="signup()">Sign Up</button><p id="msg"></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C Programming Mastery - Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:420px;
+}
+
+.card{
+    background:#111827;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo h1{
+    color:#60a5fa;
+    font-size:2rem;
+}
+
+.logo p{
+    color:#94a3b8;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border:none;
+    border-radius:10px;
+    background:#1e293b;
+    color:white;
+    font-size:16px;
+}
+
+input:focus{
+    outline:2px solid #3b82f6;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.login-btn{
+    background:#3b82f6;
+    color:white;
+}
+
+.signup-btn{
+    background:#10b981;
+    color:white;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+#msg{
+    margin-top:15px;
+    text-align:center;
+    color:#f87171;
+}
+
+.footer{
+    margin-top:20px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+@media(max-width:500px){
+    .card{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<div class="logo">
+<h1>C Mastery</h1>
+<p>Learn C Programming Like a Pro</p>
+</div>
+
+<input
+id="email"
+type="email"
+placeholder="Enter Email">
+
+<input
+id="password"
+type="password"
+placeholder="Enter Password">
+
+<button
+class="login-btn"
+onclick="login()">
+Login
+</button>
+
+<button
+class="signup-btn"
+onclick="signup()">
+Create Account
+</button>
+
+<p id="msg"></p>
+
+<div class="footer">
+Firebase Authentication Enabled
+</div>
+
+</div>
+
+</div>
+
 <script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC9C80mR-QVH66jeu3klwtXfPA8laB0iD4",
-  authDomain: "c-programming-mastery.firebaseapp.com",
-  projectId: "c-programming-mastery",
-  storageBucket: "c-programming-mastery.firebasestorage.app",
-  messagingSenderId: "994282427327",
-  appId: "1:994282427327:web:397931765828898ee2470a"
+
+apiKey: "AIzaSyC9C80mR-QVH66jeu3klwtXfPA8laB0iD4",
+
+authDomain: "c-programming-mastery.firebaseapp.com",
+
+projectId: "c-programming-mastery",
+
+storageBucket:
+"c-programming-mastery.firebasestorage.app",
+
+messagingSenderId:
+"994282427327",
+
+appId:
+"1:994282427327:web:397931765828898ee2470a"
+
 };
 
-const app=initializeApp(firebaseConfig); const auth=getAuth(app);
-window.login=async()=>{try{await signInWithEmailAndPassword(auth,email.value,password.value);location='study.html';}catch(e){msg.innerText=e.message;}};
-window.signup=async()=>{try{await createUserWithEmailAndPassword(auth,email.value,password.value);location='study.html';}catch(e){msg.innerText=e.message;}};
-</script></body></html>
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+window.login = async ()=>{
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
+
+window.location.href =
+"study.html";
+
+}
+catch(error){
+
+msg.innerText =
+error.message;
+
+}
+
+};
+
+window.signup = async ()=>{
+
+try{
+
+await createUserWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
+
+window.location.href =
+"study.html";
+
+}
+catch(error){
+
+msg.innerText =
+error.message;
+
+}
+
+};
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+window.location.href =
+"study.html";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
