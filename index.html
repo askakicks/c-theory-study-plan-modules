@@ -1,178 +1,155 @@
-from pathlib import Path
-
-html = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>C Programming Mastery Pro</title>
+<title>C Programming Mastery Firebase</title>
 <style>
-body{margin:0;font-family:Segoe UI,sans-serif;background:#0f172a;color:#e2e8f0}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,sans-serif;background:#0f172a;color:#f8fafc}
+.hidden{display:none}
+.auth{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.card{background:#1e293b;border-radius:16px;padding:20px}
+.auth .card{width:100%;max-width:420px}
+input,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none}
+button{background:#3b82f6;color:white;cursor:pointer}
 .sidebar{position:fixed;left:0;top:0;width:280px;height:100%;overflow:auto;background:#111827;padding:20px}
 .main{margin-left:300px;padding:20px}
-.card{background:#1e293b;padding:20px;margin:20px 0;border-radius:16px}
+.lesson{background:#1e293b;padding:20px;border-radius:14px;margin:15px 0}
+.progressbar{height:20px;background:#334155;border-radius:20px;overflow:hidden}
+.progress{height:100%;width:0;background:#3b82f6}
 pre{background:#020617;padding:12px;border-radius:8px;overflow:auto}
-h1,h2,h3{color:#60a5fa}
-.progresswrap{background:#334155;height:20px;border-radius:20px;overflow:hidden}
-.progress{background:#3b82f6;height:100%;width:0%}
-.search{width:100%;padding:10px;border-radius:8px;border:none}
-@media(max-width:768px){.sidebar{position:relative;width:auto;height:auto}.main{margin-left:0}}
+@media(max-width:768px){
+.sidebar{position:relative;width:100%;height:auto}
+.main{margin-left:0;padding:15px}
+input,button{font-size:16px}
+}
 </style>
 </head>
 <body>
+
+<div id="authPage" class="auth">
+  <div class="card">
+    <h2>Student Login / Signup</h2>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <p id="msg"></p>
+  </div>
+</div>
+
+<div id="coursePage" class="hidden">
 <div class="sidebar">
 <h2>C Programming Mastery</h2>
-<input class="search" id="search" placeholder="Search topics...">
-<br><br>
-<div class="progresswrap"><div class="progress" id="bar"></div></div>
-<p id="percent">0%</p>
+<p id="userEmail"></p>
+<div class="progressbar"><div class="progress" id="p"></div></div>
+<p id="pt">0%</p>
+<button onclick="logout()">Logout</button>
 </div>
 
 <div class="main">
-<h1>Complete C Programming Course</h1>
+<h1>Learn C Programming</h1>
 
-<div class="card module">
-<h2>Module 1: Introduction to C</h2>
-<p><b>C</b> is a general-purpose programming language developed by Dennis Ritchie in 1972.</p>
-<h3>Low Level Language</h3>
-<p>Close to hardware, faster but harder to understand.</p>
-<h3>High Level Language</h3>
-<p>Easy for humans to read and write.</p>
-<h3>POP vs OOP</h3>
-<p>C follows POP (Procedure Oriented Programming). OOP is used in C++, Java, Python.</p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
+<div class="lesson"><h2>Module 1: Introduction</h2>
+<p>C is a programming language developed by Dennis Ritchie.</p>
+<label><input type="checkbox" class="m"> Completed</label></div>
 
-<div class="card module">
-<h2>Module 2: Structure of C Program</h2>
+<div class="lesson"><h2>Module 2: Program Structure</h2>
 <pre>#include &lt;stdio.h&gt;
+int main(){ return 0; }</pre>
+<label><input type="checkbox" class="m"> Completed</label></div>
 
-int main()
-{
-    printf("Hello World");
-    return 0;
-}</pre>
-<p><b>main()</b> is the starting point of execution.</p>
-<p><b>return 0;</b> indicates successful execution.</p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
+<div class="lesson"><h2>Module 3: Variables</h2>
+<pre>int age=18;</pre>
+<label><input type="checkbox" class="m"> Completed</label></div>
 
-<div class="card module">
-<h2>Module 3: Data Types, Variables, Identifiers</h2>
-<pre>int age = 18;
-float mark = 95.5;
-char grade = 'A';</pre>
-<p>Variables store data. Identifiers are names given to variables and functions.</p>
-<ul>
-<li>Cannot start with numbers</li>
-<li>No spaces allowed</li>
-<li>Cannot use keywords</li>
-</ul>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
-
-<div class="card module">
-<h2>Module 4: Keywords & Escape Sequences</h2>
-<p>Keywords: int, float, char, if, else, return.</p>
-<pre>printf("Hello\\nWorld");</pre>
-<p>\\n = new line, \\t = tab.</p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
-
-<div class="card module">
-<h2>Module 5: Conditional Statements</h2>
-<pre>if(age >= 18)
- printf("Eligible");
-else
- printf("Not Eligible");</pre>
-<p>Used to make decisions in programs.</p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
-
-<div class="card module">
-<h2>Module 6: Loops</h2>
-<pre>for(int i=1;i<=5;i++)
-{
- printf("%d",i);
-}</pre>
-<p>for, while, and do-while are used for repetition.</p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
-
-<div class="card module">
-<h2>Module 7: Jump Statements</h2>
-<p><b>break</b> exits a loop.</p>
-<p><b>continue</b> skips current iteration.</p>
-<p><b>goto</b> jumps to a label.</p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
-
-<div class="card module">
-<h2>Module 8: Functions</h2>
-<pre>void greet()
-{
- printf("Hello");
-}</pre>
-<p>Functions help reuse code.</p>
-<p>Types: Library Functions and User Defined Functions.</p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
-
-<div class="card module">
-<h2>Module 9: Practical Programs</h2>
-<h3>Prime Number Logic</h3>
-<pre>for(i=2;i<n;i++)
- if(n%i==0) flag=1;</pre>
-<h3>Odd / Even</h3>
-<pre>if(n%2==0)</pre>
-<h3>Reverse Number</h3>
-<pre>rev = rev*10 + r;</pre>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
-
-<div class="card module">
-<h2>Module 10: Assessment</h2>
-<p>Q1. What is the starting function in C?</p>
-<input id="ans">
+<div class="lesson"><h2>Module 4: Quiz</h2>
+<input id="ans" placeholder="Starting function in C?">
 <button onclick="quiz()">Submit</button>
-<p id="result"></p>
-<label><input type="checkbox" class="done"> Mark Complete</label>
-</div>
+<p id="res"></p>
+<label><input type="checkbox" class="m"> Completed</label></div>
 
 </div>
+</div>
 
-<script>
-function update(){
-let c=[...document.querySelectorAll('.done')];
-let d=c.filter(x=>x.checked).length;
-let p=Math.round(d/c.length*100);
-document.getElementById('bar').style.width=p+'%';
-document.getElementById('percent').innerText=p+'% Completed';
-localStorage.setItem('courseProgress',JSON.stringify(c.map(x=>x.checked)));
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "c-programming-mastery.firebaseapp.com",
+  projectId: "c-programming-mastery",
+  storageBucket: "c-programming-mastery.firebasestorage.app",
+  messagingSenderId: "994282427327",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.signup = async ()=>{
+ try{
+  await createUserWithEmailAndPassword(auth,email.value,password.value);
+  msg.innerText="Account created";
+ }catch(e){msg.innerText=e.message;}
+};
+
+window.login = async ()=>{
+ try{
+  await signInWithEmailAndPassword(auth,email.value,password.value);
+ }catch(e){msg.innerText=e.message;}
+};
+
+window.logout = async ()=>{ await signOut(auth); };
+
+async function saveProgress(){
+ const user=auth.currentUser;
+ if(!user) return;
+ const data=[...document.querySelectorAll('.m')].map(x=>x.checked);
+ await setDoc(doc(db,"students",user.uid),{progress:data},{merge:true});
 }
-document.querySelectorAll('.done').forEach(x=>x.addEventListener('change',update));
-window.onload=()=>{
-let s=JSON.parse(localStorage.getItem('courseProgress')||'[]');
-document.querySelectorAll('.done').forEach((x,i)=>x.checked=s[i]||false);
-update();
+
+async function loadProgress(user){
+ const snap=await getDoc(doc(db,"students",user.uid));
+ if(snap.exists()){
+   const data=snap.data().progress||[];
+   document.querySelectorAll('.m').forEach((x,i)=>x.checked=data[i]||false);
+ }
+ update();
 }
-function quiz(){
-document.getElementById('result').innerText =
-document.getElementById('ans').value.toLowerCase().includes('main')
-? 'Correct!' : 'Try Again';
-}
-document.getElementById('search').addEventListener('input',function(){
-let q=this.value.toLowerCase();
-document.querySelectorAll('.module').forEach(m=>{
-m.style.display=m.innerText.toLowerCase().includes(q)?'block':'none';
+
+window.update = async ()=>{
+ let c=[...document.querySelectorAll('.m')];
+ let d=c.filter(x=>x.checked).length;
+ let p=Math.round((d/c.length)*100);
+ document.getElementById('p').style.width=p+'%';
+ document.getElementById('pt').innerText=p+'% Complete';
+ await saveProgress();
+};
+
+document.addEventListener('change',e=>{
+ if(e.target.classList.contains('m')) update();
 });
+
+onAuthStateChanged(auth, async(user)=>{
+ if(user){
+   authPage.classList.add('hidden');
+   coursePage.classList.remove('hidden');
+   userEmail.innerText=user.email;
+   await loadProgress(user);
+ }else{
+   authPage.classList.remove('hidden');
+   coursePage.classList.add('hidden');
+ }
 });
+
+window.quiz=()=>{
+ res.innerText=ans.value.toLowerCase().includes('main') ? 'Correct' : 'Incorrect';
+};
 </script>
 </body>
 </html>
-"""
-
-path="/mnt/data/C_Programming_Mastery_Pro.html"
-Path(path).write_text(html,encoding="utf-8")
-print(path)
