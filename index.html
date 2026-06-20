@@ -1,0 +1,178 @@
+from pathlib import Path
+
+html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>C Programming Mastery Pro</title>
+<style>
+body{margin:0;font-family:Segoe UI,sans-serif;background:#0f172a;color:#e2e8f0}
+.sidebar{position:fixed;left:0;top:0;width:280px;height:100%;overflow:auto;background:#111827;padding:20px}
+.main{margin-left:300px;padding:20px}
+.card{background:#1e293b;padding:20px;margin:20px 0;border-radius:16px}
+pre{background:#020617;padding:12px;border-radius:8px;overflow:auto}
+h1,h2,h3{color:#60a5fa}
+.progresswrap{background:#334155;height:20px;border-radius:20px;overflow:hidden}
+.progress{background:#3b82f6;height:100%;width:0%}
+.search{width:100%;padding:10px;border-radius:8px;border:none}
+@media(max-width:768px){.sidebar{position:relative;width:auto;height:auto}.main{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="sidebar">
+<h2>C Programming Mastery</h2>
+<input class="search" id="search" placeholder="Search topics...">
+<br><br>
+<div class="progresswrap"><div class="progress" id="bar"></div></div>
+<p id="percent">0%</p>
+</div>
+
+<div class="main">
+<h1>Complete C Programming Course</h1>
+
+<div class="card module">
+<h2>Module 1: Introduction to C</h2>
+<p><b>C</b> is a general-purpose programming language developed by Dennis Ritchie in 1972.</p>
+<h3>Low Level Language</h3>
+<p>Close to hardware, faster but harder to understand.</p>
+<h3>High Level Language</h3>
+<p>Easy for humans to read and write.</p>
+<h3>POP vs OOP</h3>
+<p>C follows POP (Procedure Oriented Programming). OOP is used in C++, Java, Python.</p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 2: Structure of C Program</h2>
+<pre>#include &lt;stdio.h&gt;
+
+int main()
+{
+    printf("Hello World");
+    return 0;
+}</pre>
+<p><b>main()</b> is the starting point of execution.</p>
+<p><b>return 0;</b> indicates successful execution.</p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 3: Data Types, Variables, Identifiers</h2>
+<pre>int age = 18;
+float mark = 95.5;
+char grade = 'A';</pre>
+<p>Variables store data. Identifiers are names given to variables and functions.</p>
+<ul>
+<li>Cannot start with numbers</li>
+<li>No spaces allowed</li>
+<li>Cannot use keywords</li>
+</ul>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 4: Keywords & Escape Sequences</h2>
+<p>Keywords: int, float, char, if, else, return.</p>
+<pre>printf("Hello\\nWorld");</pre>
+<p>\\n = new line, \\t = tab.</p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 5: Conditional Statements</h2>
+<pre>if(age >= 18)
+ printf("Eligible");
+else
+ printf("Not Eligible");</pre>
+<p>Used to make decisions in programs.</p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 6: Loops</h2>
+<pre>for(int i=1;i<=5;i++)
+{
+ printf("%d",i);
+}</pre>
+<p>for, while, and do-while are used for repetition.</p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 7: Jump Statements</h2>
+<p><b>break</b> exits a loop.</p>
+<p><b>continue</b> skips current iteration.</p>
+<p><b>goto</b> jumps to a label.</p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 8: Functions</h2>
+<pre>void greet()
+{
+ printf("Hello");
+}</pre>
+<p>Functions help reuse code.</p>
+<p>Types: Library Functions and User Defined Functions.</p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 9: Practical Programs</h2>
+<h3>Prime Number Logic</h3>
+<pre>for(i=2;i<n;i++)
+ if(n%i==0) flag=1;</pre>
+<h3>Odd / Even</h3>
+<pre>if(n%2==0)</pre>
+<h3>Reverse Number</h3>
+<pre>rev = rev*10 + r;</pre>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+<div class="card module">
+<h2>Module 10: Assessment</h2>
+<p>Q1. What is the starting function in C?</p>
+<input id="ans">
+<button onclick="quiz()">Submit</button>
+<p id="result"></p>
+<label><input type="checkbox" class="done"> Mark Complete</label>
+</div>
+
+</div>
+
+<script>
+function update(){
+let c=[...document.querySelectorAll('.done')];
+let d=c.filter(x=>x.checked).length;
+let p=Math.round(d/c.length*100);
+document.getElementById('bar').style.width=p+'%';
+document.getElementById('percent').innerText=p+'% Completed';
+localStorage.setItem('courseProgress',JSON.stringify(c.map(x=>x.checked)));
+}
+document.querySelectorAll('.done').forEach(x=>x.addEventListener('change',update));
+window.onload=()=>{
+let s=JSON.parse(localStorage.getItem('courseProgress')||'[]');
+document.querySelectorAll('.done').forEach((x,i)=>x.checked=s[i]||false);
+update();
+}
+function quiz(){
+document.getElementById('result').innerText =
+document.getElementById('ans').value.toLowerCase().includes('main')
+? 'Correct!' : 'Try Again';
+}
+document.getElementById('search').addEventListener('input',function(){
+let q=this.value.toLowerCase();
+document.querySelectorAll('.module').forEach(m=>{
+m.style.display=m.innerText.toLowerCase().includes(q)?'block':'none';
+});
+});
+</script>
+</body>
+</html>
+"""
+
+path="/mnt/data/C_Programming_Mastery_Pro.html"
+Path(path).write_text(html,encoding="utf-8")
+print(path)
